@@ -4,6 +4,8 @@ Interactive wave-interference simulator written in Rust. *Fale* means "waves" in
 
 Place point sources and line sources on a canvas and watch circular and planar waves propagate, interfere, and decay in real time.
 
+![fale screenshot](fale.png)
+
 ## Build & run
 
 ```bash
@@ -42,7 +44,7 @@ Each source emits a wave whose amplitude at pixel `(x, y)` is:
 A · exp(−decay · dist) · sin(2π · freq · (age − dist / speed) + phase)
 ```
 
-The contribution is zero until the wavefront arrives (`age > dist / speed`). All source contributions are summed, passed through `tanh` to keep values in `[−1, 1]`, then mapped to a blue→cyan→green→yellow colour gradient.
+The contribution is zero until the wavefront arrives (`age > dist / speed`). All source contributions are summed, passed through `tanh` to keep values in `[−1, 1]`, then mapped to a black-centred colour gradient (blue = negative, black = zero, yellow = positive).
 
 The render loop runs at 60 fps. Per-pixel summation is parallelised across rows with `rayon`.
 
