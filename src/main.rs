@@ -304,19 +304,15 @@ fn main() {
 }
 
 fn value_to_color(t: f32) -> u32 {
-    let (r, g, b);
-    if t < 0.25 {
-        let s = t / 0.25;
-        r = 0.0; g = s; b = 1.0;
-    } else if t < 0.5 {
-        let s = (t - 0.25) / 0.25;
-        r = 0.0; g = 1.0; b = 1.0 - s;
-    } else if t < 0.75 {
-        let s = (t - 0.5) / 0.25;
-        r = s; g = 1.0; b = 0.0;
+    // t=0.5 → black (zero amplitude / background)
+    // t→0   → blue  (negative peaks)
+    // t→1   → yellow (positive peaks)
+    let (r, g, b) = if t < 0.5 {
+        let s = 1.0 - t / 0.5;
+        (0.0_f32, 0.0, s)
     } else {
-        let s = (t - 0.75) / 0.25;
-        r = 1.0; g = 1.0 - s; b = 0.0;
-    }
+        let s = (t - 0.5) / 0.5;
+        (s, s, 0.0_f32)
+    };
     ((r * 255.0) as u32) << 16 | ((g * 255.0) as u32) << 8 | (b * 255.0) as u32
 }
